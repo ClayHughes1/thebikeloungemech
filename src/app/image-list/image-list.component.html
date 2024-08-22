@@ -1,0 +1,46 @@
+<div class="container-fluid">
+  <div *ngFor="let image of images" class="row mb-20" style="border-bottom: 1px solid #fff;padding-bottom: 20px;">
+      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-3">
+        <a [href]="image.href" (click)="navigateToDetail($event,image)">
+          <img [src]="image.src" alt="Image" class="img-fluid" style="width: 200px;height: 200px;"/>
+        </a>
+      </div>
+      <div class="col-xs-7 col-sm-7 col-md-7 col-lg-9 text-light">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p>Year: {{ image.year }}</p>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p>Make: {{ image.make }}</p>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p>Model: {{ image.model }}</p>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p>Description: {{ image.description }}</p>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p>Price: {{ image.price }}</p>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+
+<!-- <div class="row">
+    <div *ngFor="let image of images" class="col-xs-12 col-md-6 col-lg-4">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2">
+        <a [href]="'/BikeDetail/RedirectToDetails/' + image.id">
+          <img [src]="image.url" height="100" width="100" [alt]="'Image for motorcycle ' + image.id" />
+        </a>
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="color: #fff;">
+        <p *ngFor="let description of image.descriptions" style="padding-bottom:0;margin-bottom: 0;">
+          {{ description }}
+        </p>
+      </div>
+    </div>
+  </div> -->
+  

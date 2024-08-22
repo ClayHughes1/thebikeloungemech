@@ -1,0 +1,80 @@
+[
+  {
+    "userEmail": "clayhughes1113@gmail.com",
+    "Id": 1,
+    "src": "../assets/bk_img_1.jpg",
+    "href": "kjhkhkhlk",
+    "description": "a description",
+    "year": "2010",
+    "make": "Bike",
+    "model": "300",
+    "price": "3001",
+    "isForSale": false,
+    "isSold": false
+  },
+  {
+    "userEmail": "clayhughes1113@gmail.com",
+    "Id": 2,
+    "src": "../assets/bk_img_1.jpg",
+    "href": "kjhkhkhlk",
+    "description": "a description",
+    "year": "2010",
+    "make": "Bike",
+    "model": "300",
+    "price": "1500",
+    "isForSale": false,
+    "isSold": false
+  },
+  {
+    "userEmail": "clayhughes1113@gmail.com",
+    "Id": 3,
+    "src": "../assets/bk_img_1.jpg",
+    "href": "kjhkhkhlk",
+    "description": "a description",
+    "year": "2010",
+    "make": "Bike",
+    "model": "300",
+    "price": "2010",
+    "isForSale": false,
+    "isSold": false
+  },
+  {
+    "userEmail": "clayhughes1113@gmail.com",
+    "Id": 4,
+    "src": "../assets/bk_img_1.jpg",
+    "href": "kjhkhkhlk",
+    "description": "a description",
+    "year": "2010",
+    "make": "Bike",
+    "model": "300",
+    "price": "500",
+    "isForSale": false,
+    "isSold": false
+  },
+  {
+    "userEmail": "clayhughes1113@gmail.com",
+    "Id": 5,
+    "src": "../assets/bk_img_1.jpg",
+    "href": "kjhkhkhlk",
+    "description": "a description",
+    "year": "2010",
+    "make": "Bike",
+    "model": "300",
+    "price": "5000",
+    "isForSale": false,
+    "isSold": false
+  },
+  {
+    "userEmail": "liz.hughes79@gmail.com",
+    "Id": 6,
+    "src": "../assets/bk_img_1.jpg",
+    "href": "kjhkhkhlk",
+    "description": "Liz's bike",
+    "year": "2010",
+    "make": "Bike",
+    "model": "300",
+    "price": "2000",
+    "isForSale": false,
+    "isSold": false
+  }
+]

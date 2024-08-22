@@ -1,0 +1,45 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h4>Payment Details</h4>
+    </div>
+</div>
+
+<!-- <h2>Payment Information</h2> -->
+<div class="container-fluid">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+        <h4>Payment Information</h4>
+        <form (ngSubmit)="onSubmitPayment()" #paymentForm="ngForm" class="p-4">
+        <div class="form-group row">
+            <label for="cardNumber">Card Number</label>
+            <div class="col-sm-7">
+                <input type="text" id="cardNumber" name="cardNumber" required [(ngModel)]="paymentinfo.cardNumber" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="cardHolderName">Card Holder Name</label>
+            <div class="col-sm-7">
+                <input type="text" id="cardHolderName" name="cardHolderName" required [(ngModel)]="paymentinfo.cardHolderName" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="expiryDate">Expiry Date</label>
+            <div class="col-sm-7">
+                <input type="text" id="expiryDate" name="expiryDate" required [(ngModel)]="paymentinfo.expiryDate" placeholder="MM/YY" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="cvv">CVV</label>
+            <div class="col-sm-7">
+                <input type="text" id="cvv" name="cvv" required[(ngModel)]="paymentinfo.cvv" />
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <button type="submit">Submit Payment</button>
+        </div>
+        </form>
+    </div>
+</div>

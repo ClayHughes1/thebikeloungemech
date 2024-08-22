@@ -1,0 +1,48 @@
+<app-header></app-header>
+
+
+<div class="container-fluid">
+    <div class="row mb-20" style="margin-top: 50px;">
+
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-3">
+            <img [src]="src"  class="img-fluid" style="width: 200px;height: 200px;"alt="Image">
+        </div>
+        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-9 text-light">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <p>{{ description }}</p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <p>Year: {{ year }}</p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <p>Make: {{ make }}</p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <p>Model: {{ model }}</p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <p>Price: {{ price}}</p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <p>For Sale: {{ isForSale }}</p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <p>Sold: {{ isSold }}</p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"  *ngIf="isForSale==='true'">
+                  <button class="btn btn-primary" (click)="onBuyBike(this)">Buy Now</button>            
+                </div>
+            </div>
+            <input type="hidden" id="userID" [value]="userID">
+        </div>
+        <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: orange;width: 500px;">
+            <app-motorcycle-viewer></app-motorcycle-viewer>
+        </div> -->
+    </div>
+    <div class="row mb-20" style="margin-top: 50px;">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <app-motorcycle-viewer></app-motorcycle-viewer>
+        </div>
+    </div>
+</div>

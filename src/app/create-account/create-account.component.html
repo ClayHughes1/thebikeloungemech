@@ -1,0 +1,39 @@
+<app-header></app-header>
+<div class="container">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h4>Create Account</h4>
+    </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div *ngIf="errorMessage" class="alert alert-primary">
+        {{ errorMessage }}
+        <a href="/login" style="padding-left: 20px;">Go to Log in page.</a>
+      </div>
+    </div>
+  </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+        <form [formGroup]="createAccountForm" (ngSubmit)="onSubmit()" class="p-4">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input id="username" formControlName="username" type="text" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input id="email" formControlName="email" type="email" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input id="password" formControlName="password" type="password" autocomplete="off" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <input id="confirmPassword" formControlName="confirmPassword" type="password" autocomplete="off" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Create Account</button>
+          </form>
+    </div>
+</div>
+
+  

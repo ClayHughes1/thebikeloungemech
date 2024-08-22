@@ -1,0 +1,62 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h4 *ngIf="!showForgotPassword">Login</h4>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div *ngIf="resetMessage">
+                {{ resetMessage }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+        <form [formGroup]="userLogin" (ngSubmit)="onLogin()" *ngIf="!showForgotPassword" class="p-4">
+            <div class="form-group row">
+              <label for="email" class="col-sm-5 col-form-label">Email</label>
+                <div class="col-sm-7">
+                    <input class="form-control form-control-sm" id="email" formControlName="email" type="email" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group row">
+              <label for="password" class="col-sm-5 col-form-label">Password</label>
+                <div class="col-sm-7">
+                    <input class="form-control form-control-sm" id="password" formControlName="password" type="password" autocomplete="off" class="form-control" required />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100" [disabled]="userLogin.invalid">Login</button>
+        </form>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-end">
+            <a  *ngIf="!hideForgotPasswordLink" href="#" (click)="onForgotPassword($event)" class="btn btn-primary" style="margin: 0px 0 0 5px;width:98%">Forgot Password?</a>
+        </div>
+    </div>
+</div>
+
+<!-- Forgot Password Form -->
+<div *ngIf="showForgotPassword" class="container">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+        <h4>Reset Password</h4>
+        <form [formGroup]="forgotPasswordForm" (ngSubmit)="onResetPassword()" class="p-4">
+            <div class="form-group row">
+                <label for="reset-email" class="col-sm-5 col-form-label">Enter your email:</label>
+                <div class="col-sm-7">
+                    <input class="form-control form-control-sm" type="email" id="reset-email" formControlName="email" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="reset-password" class="col-sm-5 col-form-label">Enter new password:</label>
+                <div class="col-sm-7">
+                    <input class="form-control form-control-sm" type="password" id="reset-password" formControlName="newPassword" required>
+                </div>
+              </div>
+            <button type="submit" class="btn btn-primary w-100" [disabled]="forgotPasswordForm.invalid">Reset Password</button>
+        </form>
+    </div>
+</div>
+

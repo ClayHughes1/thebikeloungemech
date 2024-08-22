@@ -1,0 +1,15 @@
+#panorama {
+  width: 50%;
+  height: 300px;
+  margin-left: 30%;
+  /* background-color: #fff; */
+  transform: none !important;
+  zoom: 1 !important;
+}
+/* bike-detail.component.css */
+
+/* Hide the settings (gear) and fullscreen icons */
+.panolens-container .panolens-controls__setting,
+.panolens-container .panolens-controls__fullscreen {
+  display: none !important;
+}

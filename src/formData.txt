@@ -1,0 +1,7 @@
+UserID: 325990a2-d7da-4364-9850-de8f29bdeb6a
+Username: chughes
+Email: clayhughes1113@gmail.com
+Password: 4c8eb76110f4ffe8c7a3ba690546428b
+IV: 875988dd9b7a5a320efd0051718a3e50
+Key: e0592af285b50268e7ded6d651733811cfd4581e71f8dd528533b39067f63388
+

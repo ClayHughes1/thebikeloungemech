@@ -1,0 +1,19 @@
+/* .image-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+  background-color: lightblue;
+} */
+
+.image-item {
+  /* width: 100%; */
+  /* text-align: center; */
+  background-color: green;
+}
+
+/* .image-item img {
+  max-width: 200;
+  width: 200px;
+  height: 200px;
+} */
