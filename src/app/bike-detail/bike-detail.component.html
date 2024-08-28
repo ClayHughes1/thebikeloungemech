@@ -22,7 +22,8 @@
                     <p>Model: {{ model }}</p>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                  <p>Price: {{ price}}</p>
+                    <p>Price: {{ price | currency:'USD':'symbol':'1.2-2' }}</p>
+                    <!-- <p>Price: {{ price}}</p> -->
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                   <p>For Sale: {{ isForSale }}</p>
@@ -36,13 +37,14 @@
             </div>
             <input type="hidden" id="userID" [value]="userID">
         </div>
-        <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="background-color: orange;width: 500px;">
-            <app-motorcycle-viewer></app-motorcycle-viewer>
-        </div> -->
     </div>
-    <div class="row mb-20" style="margin-top: 50px;">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="row" style="margin-top: 50px;">
+        <div class="col-xs-12 col-sm-10 col-md-6 col-lg-6">
             <app-motorcycle-viewer></app-motorcycle-viewer>
         </div>
     </div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <app-footer></app-footer>
 </div>

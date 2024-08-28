@@ -20,7 +20,7 @@
             <p>Description: {{ image.description }}</p>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <p>Price: {{ image.price }}</p>
+            <p>Price: {{ image.price | currency:'USD':'symbol':'1.2-2' }}</p>
           </div>
         </div>
       </div>

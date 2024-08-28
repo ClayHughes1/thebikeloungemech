@@ -173,3 +173,15 @@
   transform: none !important;
   zoom: 1 !important;
 }
+.logo{
+  width:40%;
+  height: 40%;
+}
+
+.footer-lnk > ul a {
+  cursor: pointer;
+}
+
+.footer-lnk > ul a:hover {
+  color: #000; /* Change color on hover */
+}

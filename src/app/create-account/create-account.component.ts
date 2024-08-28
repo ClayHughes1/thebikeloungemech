@@ -4,11 +4,12 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule  } from '@angul
 import { CommonModule } from '@angular/common';
 import { HttpClient,HttpClientModule  } from '@angular/common/http';
 import { Router } from '@angular/router';  // Import Router
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-create-account',
   standalone: true,
-  imports: [HeaderComponent,ReactiveFormsModule, HttpClientModule,CommonModule ],
+  imports: [HeaderComponent,ReactiveFormsModule, HttpClientModule,CommonModule,FooterComponent ],
   templateUrl: './create-account.component.html',
   styleUrl: './create-account.component.css'
 })

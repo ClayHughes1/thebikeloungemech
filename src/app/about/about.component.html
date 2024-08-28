@@ -1,4 +1,26 @@
 <!-- <app-navbar></app-navbar> -->
 <app-header></app-header>
-<p>about works!</p>
+<div class="container mt-5 text-dark">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <h2 class="card-title">Welcome to Bike Lounge</h2>
+                    <p class="card-text">
+                        Bike Lounge is the ultimate destination for motorcycle enthusiasts. Whether you're looking to buy, sell, or simply explore different types of motorcycles, we've got you covered.
+                    </p>
+                    <p class="card-text">
+                        Browse through a wide variety of motorcycles, from sport bikes to cruisers, and find the perfect ride that suits your style. Interested in selling your bike? List it on Bike Lounge and connect with buyers across the nation.
+                    </p>
+                    <a href="/home" class="btn btn-primary mt-3">Explore Motorcycles</a>
+                    <a *ngIf="isLoggedIn" href="/add-bike" class="btn btn-secondary mt-3">Sell Your Bike</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <app-footer></app-footer>
+</div>
 

@@ -4,11 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MotorcycleViewerComponent } from '../motorcycle-viewer/motorcycle-viewer.component';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-bike-detail',
   standalone: true,
-  imports: [HeaderComponent,CommonModule,MotorcycleViewerComponent],
+  imports: [HeaderComponent,CommonModule,MotorcycleViewerComponent,FooterComponent],
   templateUrl: './bike-detail.component.html',
   styleUrl: './bike-detail.component.css'
 })

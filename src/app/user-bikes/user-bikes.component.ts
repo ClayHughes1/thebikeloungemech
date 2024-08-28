@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { HttpClient,HttpClientModule  } from '@angular/common/http';
 import { Router } from '@angular/router';  // Import Router
 import { FormsModule } from '@angular/forms';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-user-bikes',
   standalone: true,
-  imports: [CommonModule,HeaderComponent,HttpClientModule, FormsModule],
+  imports: [CommonModule,HeaderComponent,HttpClientModule, FormsModule,FooterComponent],
   templateUrl: './user-bikes.component.html',
   styleUrl: './user-bikes.component.css'
 })
@@ -25,7 +26,6 @@ export class UserBikesComponent {
     this.http.get('http://localhost:3000/getBikeDetails', { withCredentials: true })
       .subscribe(
         (response: any) => {
-          console.log('Type of response:', typeof response);
           this.bikes = response;
         },
         (error) => {

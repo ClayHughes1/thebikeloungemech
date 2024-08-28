@@ -40,7 +40,6 @@ export class ImageListComponent implements OnInit {
             bike.isForSale,
             bike.isSold
           ));
-          console.log('Bike images loaded:', this.images);
         },
         (error) => {
           console.error('Error loading bike images:', error);

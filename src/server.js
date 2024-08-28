@@ -5,12 +5,44 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');  // Import the cors package
-const cookieParser = require('cookie-parser');
 const app = express();
 const port = 3000;
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 const session = require('express-session');
+
+const cookieParser = require('cookie-parser');
+const multer = require('multer');
+
+// Set up storage configuration for multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'assets/uploads/'); // Ensure this directory exists
+  },
+  filename: function (req, file, cb) {
+    const emailCook = req.cookies['email'];
+
+    const emailPrefix = emailCook.substring(0, emailCook.indexOf('@'));
+
+    // Generate a unique filename to prevent overwriting
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+
+    // Combine email prefix with the unique suffix and file extension
+    const newFilename = `${emailPrefix}${uniqueSuffix}${path.extname(file.originalname)}`.replace('-', '_');
+    console.log('BEFORE SAVING FILE NAME ',newFilename)
+    
+    cb(null, newFilename);
+    // Use a unique filename to prevent overwriting
+    // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    // cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+// Initialize multer with the storage configuration
+const upload = multer({ storage: storage });
+
+const siteUrl = 'http://localhost:4200/assets';
+
 
 app.use(cors({
   origin: 'http://localhost:4200', // your Angular app's URL
@@ -155,40 +187,66 @@ app.post('/forgot-password', (req, res) => {
   });
 });
 
-app.post('/addbike', (req, res) => {
-  const {userId,  Id, src, href, description, year, make, model, price, isForSale, isSold } = req.body;
-try {
-  console.log('Cookies:', req.cookies); 
-  console.log('Session cookie:', req.headers.cookie);
-console.log('REQUEST headers.......  \n',req.headers);
+// POST route to handle bike addition
+app.post('/addbike', upload.single('image'), (req, res) => {
+  // Access the file and form fields
+  //req.file;
+  const { description, year, make, model, isForSale, isSold } = req.body;
+  const emailCook = req.cookies['email'];
+  const fileEmailPrefix =  emailCook.split('@')[0];
+  const file = req.file ? `/uploads/${req.file.filename}` : '';
 
-  const bikeData = `
-  userEmail: 'clayhugehs1113$gmail.com'
-  ImageID: ${Id}
-  Source: ${src}
-  Href: ${href}
-  Description: ${description}
-  Year: ${year}
-  Make: ${make}
-  Model: ${model}
-  Price: ${price}
-  isForSale: ${isForSale}
-  IsSold: ${isSold}
-  `;
-console.log('new bike \n',bikeData);
+  const fileName = file.replace('-', '_');
   const filePath = path.join(__dirname, 'bikeData.txt');
+  
+  // Validate required fields
+  if (!file) {
+    return res.status(400).json({ error: 'Image file is required.' });
+  }
 
-  // Write bike details to a file
-  fs.appendFile(filePath, bikeData + '\n\n', (err) => {
-    if (err) {
-      return res.status(500).json({ message: 'Failed to write bike details to file' });
-    }
-    res.status(200).json({ message: 'Bike details added successfully' });
-  });
+  // Initialize href with the site URL and file path
+  const href = `${siteUrl}${fileName}`;
+  console.log('file path  \n',href);
 
-} catch (error) {
-  console.log('an error has occurred in the api\n',error);
-}
+  if (!href || !description || !year || !make || !model) {
+    return res.status(400).json({ error: 'Missing required fields.' });
+  }
+
+  // Parse boolean fields (they come as strings)
+  const isForSaleBool = isForSale === 'true';
+  const isSoldBool = isSold === 'true';
+
+  // Parse numerical fields
+  const yearNum = parseInt(year, 10);
+  const priceNum = parseFloat(req.body.price) || 0; // Assuming price is optional or defaults to 0
+
+  getMaxIdFromFile(filePath)
+    .then(maxId => {
+      console.log('Max ID found:', maxId);
+      const IdVal = maxId + 1; // Increment ID for new entry
+
+      const newBike = {
+        userEmail: emailCook,
+        Id: IdVal,
+        src: href,// Assuming file.path is available from file upload middleware
+        href,
+        description,
+        year: yearNum,
+        make,
+        model,
+        price: priceNum,
+        isForSale: isForSaleBool,
+        isSold: isSoldBool,
+      };
+
+      // addBikeToFile(filePath,bikeJSON)
+      addBikeToFile(filePath,newBike)
+    })
+    .catch(err => {
+      console.error('Failed to get max ID:', err);
+      res.status(500).json({ success: false, error: 'Failed to process request' });
+    });
+
 });
 
 app.post('/updatemybike', (req, res) => {
@@ -234,7 +292,9 @@ app.post('/updatemybike', (req, res) => {
 app.get('/getBikeDetails', (req, res) => {
   try {
     const filePath = path.join(__dirname, 'bikeData.txt');
-    const emailCookie = req.headers.cookie;
+    // const emailCookie = req.headers.cookie;
+    const emailCook = req.cookies['email'];
+
     const matchItems = [];
 
     if (!emailCookie) {
@@ -242,7 +302,6 @@ app.get('/getBikeDetails', (req, res) => {
     }
 
     const email = decodeURIComponent(emailCookie.split('=')[1]).trim();
-console.log(email);
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
         return res.status(500).json({ error: 'Error reading file' });
@@ -259,18 +318,13 @@ console.log(email);
             // console.log('THERE HAS BEEN A MATCH  .    ',item.userEmail,'\n');
             matchItems.push(item);
           }
-          else {
-            console.log('NO MATCH FOUND.......  \n');
-          }
         }
      } catch (error) {
         console.log('an error occurred \n',error);
      }
 
-      // console.log('MATCH ITEMS ARRAY  \n',matchItems);
       res.json(JSON.parse(JSON.stringify(matchItems)));
     });
-
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Server error' });
@@ -290,7 +344,7 @@ console.log('getting bike and images \n');
     let bikeArray;
     try {
       bikeArray = JSON.parse(data);
-      console.log('bike array  \n',bikeArray);
+      // console.log('bike array  \n',bikeArray);
     } catch (parseError) {
       console.error('Error parsing JSON data:', parseError);
       return res.status(500).send('Server error');
@@ -533,6 +587,57 @@ function parseBikeData(line) {
       }
   });
   return bike;
+}
+
+function getMaxIdFromFile(filePath) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, 'utf-8', (err, data) => {
+      if (err) {
+        return reject(err);
+      }
+      try {
+        const bikes = JSON.parse(data);
+        const maxId = bikes.reduce((max, bike) => Math.max(max, bike.Id), 0);
+        resolve(maxId);
+      } catch (parseError) {
+        reject(parseError);
+      }
+    });
+  });
+}
+
+
+function addBikeToFile(filePath, newBike) {
+  // Read the existing data from the file
+  fs.readFile(filePath, 'utf-8', (err, data) => {
+    if (err) {
+      return err;
+    }
+    let bikes = [];
+
+    try {
+      // Parse the data
+      if (data.trim()) {
+        bikes = JSON.parse(data);
+      }
+    } catch (parseError) {
+      return parseError;
+    }
+
+    // Add the new bike to the array
+    bikes.push(newBike);
+
+    // Convert the updated array to a JSON string
+    const updatedData = JSON.stringify(bikes, null, 2);
+
+    // Write the updated array back to the file
+    fs.writeFile(filePath, updatedData, 'utf-8', (writeError) => {
+      if (writeError) {
+        return writeError;
+      }
+      return 'Bike added successfully!';
+    });
+  });
 }
 
 app.listen(port, () => {

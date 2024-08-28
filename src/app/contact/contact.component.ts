@@ -3,11 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ContactFormComponent} from '../contact-form/contact-form.component';
 // import { NavbarComponent } from '../navbar/navbar.component';
 import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [ContactFormComponent,HeaderComponent],
+  imports: [ContactFormComponent,HeaderComponent,FooterComponent],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.css'
 })

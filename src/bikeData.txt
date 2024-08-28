@@ -76,5 +76,31 @@
     "price": "2000",
     "isForSale": false,
     "isSold": false
+  },
+  {
+    "userEmail": "clayhughes1113@gmail.com",
+    "Id": 9,
+    "src": "http://localhost:4200/assets/uploads/clayhughes11131724855154909_871154500.jpg",
+    "href": "http://localhost:4200/assets/uploads/clayhughes11131724855154909_871154500.jpg",
+    "description": "a description",
+    "year": 2000,
+    "make": "Bike",
+    "model": "200",
+    "price": 500,
+    "isForSale": true,
+    "isSold": false
+  },
+  {
+    "userEmail": "clayhughes1113@gmail.com",
+    "Id": 10,
+    "src": "http://localhost:4200/assets/uploads/clayhughes11131724856334074_270820978.jpg",
+    "href": "http://localhost:4200/assets/uploads/clayhughes11131724856334074_270820978.jpg",
+    "description": "a description",
+    "year": 1900,
+    "make": "BMW",
+    "model": "1500CC",
+    "price": 10000,
+    "isForSale": true,
+    "isSold": false
   }
 ]

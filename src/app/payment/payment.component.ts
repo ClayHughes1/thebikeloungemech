@@ -6,11 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient,HttpClientModule  } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { PaymentDetail } from '../model/paymentdetail.model';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-payment',
   standalone:true,
-  imports: [HeaderComponent,CommonModule,FormsModule],
+  imports: [HeaderComponent,CommonModule,FormsModule,FooterComponent],
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.css']
 })
