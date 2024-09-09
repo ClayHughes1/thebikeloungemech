@@ -30,10 +30,16 @@
                     <input class="form-control form-control-sm" id="password" formControlName="password" type="password" autocomplete="off" class="form-control" required />
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary w-100" [disabled]="userLogin.invalid">Login</button>
+            <div class="form-group row">
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 offset-sm-7 text-right">
+                    <button type="submit" class="btn btn-primary w-100" [disabled]="userLogin.invalid">Login</button>
+                </div>
+            </div>
         </form>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-end">
-            <a  *ngIf="!hideForgotPasswordLink" href="#" (click)="onForgotPassword($event)" class="btn btn-primary" style="margin: 0px 0 0 5px;width:98%">Forgot Password?</a>
+            <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 offset-sm-7 text-right">
+                <a  *ngIf="!hideForgotPasswordLink" href="#" (click)="onForgotPassword($event)" class="btn btn-primary w-100" style="margin: 0px 0 0 5px;">Forgot Password?</a>
+            </div>
         </div>
     </div>
 </div>
@@ -55,7 +61,11 @@
                     <input class="form-control form-control-sm" type="password" id="reset-password" formControlName="newPassword" required>
                 </div>
               </div>
-            <button type="submit" class="btn btn-primary w-100" [disabled]="forgotPasswordForm.invalid">Reset Password</button>
+              <div class="form-group row">
+                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 offset-sm-7 text-right">
+                    <button type="submit" class="btn btn-primary w-100" [disabled]="forgotPasswordForm.invalid">Reset Password</button>
+                </div>
+              </div>
         </form>
     </div>
 </div>

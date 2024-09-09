@@ -26,6 +26,7 @@ export class UserBikesComponent {
     this.http.get('http://localhost:3000/getBikeDetails', { withCredentials: true })
       .subscribe(
         (response: any) => {
+          console.log('RESPONSE FOMR SERVER \n',response);
           this.bikes = response;
         },
         (error) => {

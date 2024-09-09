@@ -10,6 +10,8 @@ const port = 3000;
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 const session = require('express-session');
+const sharp = require('sharp');
+const url = require('url');
 
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
@@ -40,9 +42,11 @@ const storage = multer.diskStorage({
 
 // Initialize multer with the storage configuration
 const upload = multer({ storage: storage });
-
 const siteUrl = 'http://localhost:4200/assets';
 
+// const inputImagePath = path.join(__dirname, 'input-image.jpg'); // Change the file name as needed
+// const outputImagePath = inputImagePath.replace(path.extname(inputImagePath), '.webp');
+// convertToWebP(inputImagePath, outputImagePath);
 
 app.use(cors({
   origin: 'http://localhost:4200', // your Angular app's URL
@@ -139,22 +143,11 @@ app.post('/login', (req, res) => {
       try {
         const emailCook = req.cookies['email']; // Get the userID from the existing cookie
         if (!emailCook) {
-          // console.log('CREATING USER ID COOKIE..................\n');
           res.cookie('email', email, { httpOnly: false, secure: false, maxAge: 24 * 60 * 60 * 1000,path: '/', domain: 'localhost'  }); // 1 day expiration
-  
-          
-          // res.cookie('email', email, {maxAge: 900000, path: '/', httpOnly: false, sameSite: 'Lax' });
-          // console.log('GETTING THE NON EXISTANT COOKIE........  ',req.cookies['email']);
-          // console.log('Set-Cookie:', res.getHeaders()['set-cookie']); // Verify the Set-Cookie header
         }
-  
       } catch (error) {
         console.log('error....    ',error);
       }
-  
-      // console.log('Session cookie Login:', req.headers.cookie);
-      // console.log('REQUEST headers.......  \n',req.headers);
-
       return res.status(200).json({ message: 'Login successful',login:true });
     } else {
       return res.status(401).json({ message: 'Invalid email or password' });
@@ -289,19 +282,51 @@ app.post('/updatemybike', (req, res) => {
   }
 });
 
+async function convertImageToWebP(req, res) {
+  const { imageSrc } = req.body;
+  console.log('IMAGE URL   ',imageSrc);
+
+  const fileName = path.basename(imageSrc); // Extract the file name from the URL/path
+  const localFilePath = path.join(__dirname, 'assets', 'uploads', fileName); // Define the local file path
+  console.log('file name    ',fileName);
+
+  const outputWebPPath = path.join(__dirname, 'assets', '360image', fileName.replace(path.extname(fileName), '.webp'));
+  console.log('Output path     ', outputWebPPath);
+
+  const webpFileName = path.basename(outputWebPPath);
+  console.log('new file path  ',webpFileName);
+
+  sharp(localFilePath)
+  .webp({ quality: 80 })
+  .toFile(outputWebPPath)
+  .then(() => {
+    const webpSrc = `${siteUrl}/360image/${webpFileName}`;
+    console.log('WebP Source URL:', webpSrc);
+    res.json({ webpSrc: webpSrc });
+  })
+  .catch(err => {
+    console.error('Error converting image to WebP:', err);
+    res.status(500).json({ error: 'Failed to convert image to WebP' });
+  });
+}
+
+// Express route handler to convert an image to WebP
+app.post('/convert-to-webp', convertImageToWebP);
+
 app.get('/getBikeDetails', (req, res) => {
   try {
     const filePath = path.join(__dirname, 'bikeData.txt');
-    // const emailCookie = req.headers.cookie;
-    const emailCook = req.cookies['email'];
-
+    const emailCookie = req.cookies['email'];
     const matchItems = [];
+    const imageFilePath = path.join(__dirname, 'motorcycle_images.json');
+console.log('COOKIE   ',emailCookie);
 
-    if (!emailCookie) {
+    if (emailCookie === ''  || emailCookie === undefined) {
       return res.status(400).json({ error: 'Email cookie not found' });
     }
 
     const email = decodeURIComponent(emailCookie.split('=')[1]).trim();
+    console.log('EMAIL FROM COOKIE OBJECT   ',email);
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
         return res.status(500).json({ error: 'Error reading file' });
@@ -311,11 +336,9 @@ app.get('/getBikeDetails', (req, res) => {
       try {
         for(var attributename in JSON.parse(bikeEntries)){
           const item = JSON.parse(bikeEntries)[attributename];
-          // console.log(item.userEmail);
 
-          if(item.userEmail === email)
+          if(item.userEmail === emailCookie)
           {
-            // console.log('THERE HAS BEEN A MATCH  .    ',item.userEmail,'\n');
             matchItems.push(item);
           }
         }
@@ -323,8 +346,44 @@ app.get('/getBikeDetails', (req, res) => {
         console.log('an error occurred \n',error);
      }
 
-      res.json(JSON.parse(JSON.stringify(matchItems)));
+         // Read the motorcycle images file
+    fs.readFile(imageFilePath, 'utf8', (err, imageData) => {
+      if (err) {
+        console.error('Error reading image file:', err);
+        return res.status(500).send('Server error');
+      }
+
+      // Parse the image data
+      let imageArray;
+      try {
+        imageArray = JSON.parse(imageData);
+      } catch (parseError) {
+        console.error('Error parsing image JSON data:', parseError);
+        return res.status(500).send('Server error');
+      }
+
+      // Filter images based on the user email
+      const userImages = imageArray.filter(image => image.userEmail === email);
+
+      // Attach the imageList to each bike object where the email matches
+      const userBikeData = matchItems.map(bike => {
+        if (bike.userEmail === email) {
+          bike.imageList = userImages.map(img => img.src);
+        }
+        return bike;
+      });
+
+      // console.log('user bie daa \n',userBikeData);
+
+      res.json(JSON.parse(JSON.stringify(userBikeData)));
+
+      // Send the updated bike data with imageList as JSON response
+      // res.json(userBikeData);
     });
+
+      // res.json(JSON.parse(JSON.stringify(matchItems)));
+    });
+
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Server error' });
@@ -333,7 +392,11 @@ app.get('/getBikeDetails', (req, res) => {
 
 app.get('/getBikeImages', (req, res) => {
   const filePath = path.join(__dirname, 'bikeData.txt');
-console.log('getting bike and images \n');
+  const imageFilePath = path.join(__dirname, 'motorcycle_images.json');
+  const emailCookie = req.cookies['email'];
+  let bikeArray;
+
+  console.log('email cookie     ',emailCookie);
   // Read the file and parse it
   fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
@@ -341,7 +404,7 @@ console.log('getting bike and images \n');
       return res.status(500).send('Server error');
     }
 
-    let bikeArray;
+    // let bikeArray;
     try {
       bikeArray = JSON.parse(data);
       // console.log('bike array  \n',bikeArray);
@@ -350,8 +413,102 @@ console.log('getting bike and images \n');
       return res.status(500).send('Server error');
     }
 
+    fs.readFile(imageFilePath, 'utf8', (err, imageData) => {
+
+      if (err) {
+        console.error('Error reading motorcycle images file:', err);
+        return res.status(500).send('Server error');
+      }
+
+      let imageArray;
+      try {
+        imageArray = JSON.parse(imageData);
+        // console.log('INITIALIZING IMAGE ARRAY OBJECT ............\n',imageArray);
+
+        // Ensure it's an array of objects
+        if (!Array.isArray(imageArray) && typeof imageArray === 'object') {
+          imageArray = [imageArray]; // Wrap it in an array if it's a single object
+        }
+
+      } catch (parseError) {
+        console.error('Error parsing images JSON:', parseError);
+        return res.status(500).send('Server error');
+      }
+
+      // if (err) {
+      //   console.error('Error reading motorcycle images file:', err);
+      //   return res.status(500).send('Server error');
+      // }
+
+      // let imageArray;
+      // try {
+      //   imageArray = JSON.parse(imageData);
+      // } catch (parseError) {
+      //   console.error('Error parsing images JSON:', parseError);
+      //   return res.status(500).send('Server error');
+      // }
+
+      // console.log('BIKE BEFORE COMBNE  \n',bikeArray)
+      // Combine the image data with the bike data
+      const combinedBikeData = bikeArray.map(bike => {
+        // Find matching image data for the bike
+        const imagesForBike = imageArray.filter(image => image.userEmail === bike.userEmail); // Assuming 'bikeId' in image data matches 'Id' in bike data
+        // console.log('IMAGE FOR BIKE  \n',imagesForBike);
+
+        let imageList = [];
+
+        if (imagesForBike.length > 0) {
+          console.log('Motorcycles array found:', imagesForBike[0].motorcycles);
+      
+          if (imagesForBike[0].motorcycles && imagesForBike[0].motorcycles.length > 0) {
+            // Map over the motorcycles array to get all image URLs
+            imageList = imagesForBike[0].motorcycles.map(motorcycle => {
+              console.log('Processing motorcycle:', motorcycle);
+              return motorcycle.imageUrl || null;
+            });
+      
+            console.log('Populated imageList:', imageList);
+          } else {
+            console.log('No valid motorcycles array found for the bike.');
+          }
+        } else {
+          console.log('No matching images found for this bike.');
+        }
+
+        return {
+          ...bike,
+          imageList: imageList // Assign the imageList array
+        };
+
+        // Check if imagesForBike is not empty and contains valid motorcycles array
+        // if (imagesForBike.length > 0 && imagesForBike[0].motorcycles && imagesForBike[0].motorcycles.length > 0) {
+        //   // Flatten the motorcycles array and map to get all image sources
+        //   imageList = imagesForBike[0].motorcycles.map(motorcycle => motorcycle.imageUrl);
+        // }
+        // console.log('IMAGE LIST \n',imageList);
+
+        
+        // return {
+        //   ...bike,
+        //   imageList: imagesForBike.map(image => image.src) // Assuming 'src' is the property containing the image URL
+        // };
+      });
+      console.log('combined array  \n',combinedBikeData);
+
+      // Send the parsed bike data as JSON response
+      // res.json(bikeArray);
+  
+      res.json(combinedBikeData);
+  
+
+    });
+    // console.log('combined array  \n',combinedBikeData);
+
     // Send the parsed bike data as JSON response
-    res.json(bikeArray);
+    // res.json(bikeArray);
+
+    // res.json(combinedBikeData);
+
   });
 });
 
@@ -605,7 +762,6 @@ function getMaxIdFromFile(filePath) {
     });
   });
 }
-
 
 function addBikeToFile(filePath, newBike) {
   // Read the existing data from the file

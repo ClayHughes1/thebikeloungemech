@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Inject, PLATFORM_ID, NgZone } from '@angular/core';
+import { Component, AfterViewInit, Inject, PLATFORM_ID, NgZone,Input  } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import * as PANOLENS from 'panolens';
 
@@ -9,6 +9,9 @@ import * as PANOLENS from 'panolens';
   standalone:true
 })
 export class MotorcycleViewerComponent implements AfterViewInit  {
+  @Input() src: string | undefined;
+
+
   //This code block works to display the image but 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {  }
 
@@ -22,13 +25,25 @@ export class MotorcycleViewerComponent implements AfterViewInit  {
           };
         }
 
-        const panorama = new PANOLENS.ImagePanorama('../assets/images/360_motorcycle.webp');
+        if (this.src) {
+          const panorama = new PANOLENS.ImagePanorama(this.src);
 
-        const viewer = new PANOLENS.Viewer({
-          container: document.querySelector('#panorama'),
-        });
+          const viewer = new PANOLENS.Viewer({
+            container: document.querySelector('#panorama'),
+          });
+
+          viewer.add(panorama);
+        } else {
+          console.error('No image source provided for the panorama.');
+        }
+
+        // const panorama = new PANOLENS.ImagePanorama('../assets/images/360_motorcycle.webp');
+
+        // const viewer = new PANOLENS.Viewer({
+        //   container: document.querySelector('#panorama'),
+        // });
         
-        viewer.add(panorama);
+        // viewer.add(panorama);
 
       } catch (error) {
         console.error('Error creating panorama or viewer:', error);

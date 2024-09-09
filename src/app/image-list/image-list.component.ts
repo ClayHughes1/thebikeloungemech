@@ -23,10 +23,10 @@ export class ImageListComponent implements OnInit {
   }
 
   loadBikeImages(): void {
-    this.http.get<Image[]>('http://localhost:3000/getBikeImages')
+    this.http.get<Image[]>('http://localhost:3000/getBikeImages', { withCredentials: true })
       .subscribe(
         (response: Image[]) => {
-          this.images = response.map(bike => new Image(
+          this.images = response?.map(bike => new Image(
             bike.userEmail,
             bike.userId, // Assuming 'id' is UUID
             bike.Id, // Update to lowercase 'i'
@@ -38,7 +38,8 @@ export class ImageListComponent implements OnInit {
             bike.model,
             bike.price,
             bike.isForSale,
-            bike.isSold
+            bike.isSold,
+            bike.imageList
           ));
         },
         (error) => {
@@ -48,8 +49,8 @@ export class ImageListComponent implements OnInit {
   }
 
   navigateToDetail(event: Event, image: Image): void {
-    console.log('in click event');
     event.preventDefault();  // Prevent the default anchor click behavior
+    console.log('IMAGE LIST BEFORE THE NAVIGATION OCCURS  \n',image.imageList);
     this.router.navigate(['/bike-detail/'], {
       queryParams: {
         src: image.src,
@@ -60,7 +61,9 @@ export class ImageListComponent implements OnInit {
         model: image.model,
         price: image.price,
         isForSale: image.isForSale,
-        IsSold: image.isSold
+        IsSold: image.isSold,
+        imageList: JSON.stringify(image.imageList)
+        // imageList: image.imageList
       }
     });
   }

@@ -1,0 +1,39 @@
+[
+  {
+    "userEmail": "clayhughes1113@gmail.com",
+    "motorcycles": [
+      {
+        "angle": "front",
+        "imageUrl": "http://localhost:4200/assets/uploads/clayhughes11131724855154909_871154500.jpg"
+      },
+      {
+        "angle": "rear",
+        "imageUrl": "http://localhost:4200/assets/uploads/clayhughes11131724856334074_270820978.jp"
+      },
+      {
+        "angle": "left_side",
+        "imageUrl": "http://localhost:4200/assets/uploads/clayhughes11131724855154909_871154500.jpg"
+      },
+      {
+        "angle": "right_side",
+        "imageUrl": "http://localhost:4200/assets/uploads/clayhughes11131724855154909_871154500.jpg"
+      },
+      {
+        "angle": "front_left_diagonal",
+        "imageUrl": "http://localhost:4200/assets/uploads/clayhughes11131724855154909_871154500.jpg"
+      }
+    ]
+  },
+  {
+    "userEmail": "liz.hughes79@gmail.com",
+    "motorcycles": [
+        {
+          "angle": "front",
+          "imageUrl": "http://localhost:4200/assets/uploads/clayhughes11131724855154909_871154500.jpg"
+        }
+      ]
+  }
+]
+
+
+  

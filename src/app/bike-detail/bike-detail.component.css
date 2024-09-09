@@ -1,0 +1,26 @@
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5%; /* Adjust width to your preference */
+}
+
+.carousel-control-prev {
+  left: -10%; /* Adjust for positioning outside the carousel */
+}
+
+.carousel-control-next {
+  right: 20%; /* Adjust for positioning outside the carousel */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-size: 100%, 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: Add background color to make controls more visible */
+  border-radius: 50%;
+}
+.slide-image{
+    width:70%;
+    height: 70%;
+}

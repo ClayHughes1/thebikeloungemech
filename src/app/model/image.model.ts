@@ -13,6 +13,7 @@ export class Image {
     public model: string,
     public price:string,
     public isForSale:boolean,
-    public isSold: boolean
+    public isSold: boolean,
+    public imageList: []
   ) {}
 }

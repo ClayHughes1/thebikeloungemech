@@ -10,7 +10,8 @@
     "model": "300",
     "price": "3001",
     "isForSale": false,
-    "isSold": false
+    "isSold": false,
+    "imageList": []
   },
   {
     "userEmail": "clayhughes1113@gmail.com",
@@ -23,7 +24,8 @@
     "model": "300",
     "price": "1500",
     "isForSale": false,
-    "isSold": false
+    "isSold": false,
+    "imageList": []
   },
   {
     "userEmail": "clayhughes1113@gmail.com",
@@ -36,7 +38,8 @@
     "model": "300",
     "price": "2010",
     "isForSale": false,
-    "isSold": false
+    "isSold": false,
+    "imageList": []
   },
   {
     "userEmail": "clayhughes1113@gmail.com",
@@ -49,7 +52,8 @@
     "model": "300",
     "price": "500",
     "isForSale": false,
-    "isSold": false
+    "isSold": false,
+    "imageList": []
   },
   {
     "userEmail": "clayhughes1113@gmail.com",
@@ -62,7 +66,8 @@
     "model": "300",
     "price": "5000",
     "isForSale": false,
-    "isSold": false
+    "isSold": false,
+    "imageList": []
   },
   {
     "userEmail": "liz.hughes79@gmail.com",
@@ -75,7 +80,8 @@
     "model": "300",
     "price": "2000",
     "isForSale": false,
-    "isSold": false
+    "isSold": false,
+    "imageList": []
   },
   {
     "userEmail": "clayhughes1113@gmail.com",
@@ -88,7 +94,8 @@
     "model": "200",
     "price": 500,
     "isForSale": true,
-    "isSold": false
+    "isSold": false,
+    "imageList": []
   },
   {
     "userEmail": "clayhughes1113@gmail.com",
@@ -101,6 +108,7 @@
     "model": "1500CC",
     "price": 10000,
     "isForSale": true,
-    "isSold": false
+    "isSold": false,
+    "imageList": []
   }
 ]
