@@ -44,10 +44,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 const siteUrl = 'http://localhost:4200/assets';
 
-// const inputImagePath = path.join(__dirname, 'input-image.jpg'); // Change the file name as needed
-// const outputImagePath = inputImagePath.replace(path.extname(inputImagePath), '.webp');
-// convertToWebP(inputImagePath, outputImagePath);
-
 app.use(cors({
   origin: 'http://localhost:4200', // your Angular app's URL
   credentials: true
@@ -55,15 +51,6 @@ app.use(cors({
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-
-
-
-// app.use(session({
-//   secret: process.env.SESSION_KEY, // Replace with a secure secret key
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: { httpOnly: true, secure: false , maxAge: 100000 } // Set secure to true if using HTTPS
-// }));
 
 const algorithm = 'aes-256-cbc'; // AES encryption algorithm
 
@@ -243,8 +230,9 @@ app.post('/addbike', upload.single('image'), (req, res) => {
 });
 
 app.post('/updatemybike', (req, res) => {
-  const { userEmail, ImageID, Year, Make, Model, Description, Price, isForSale, IsSold, Source } = req.body;
+  const { userEmail,Id,year, make, model, description, price, isForSale, isSold, src } = req.body;
   const filePath = path.join(__dirname, 'bikeData.txt');
+
   let updatedBike;
   let bikeArray = [];
   try {
@@ -258,9 +246,8 @@ app.post('/updatemybike', (req, res) => {
         const ind = -1;
         for(var attributename in JSON.parse(bikeEntries)){
           const item = JSON.parse(bikeEntries)[attributename];
-          console.log(item.ImageID);
 
-          if(item.ImageID === ImageID)
+          if(item.Id === Id)
           {
             updatedBike = updateBikeDetails(req.body, item);            // matchItems.push(item);
             bikeArray.push(updatedBike);
@@ -268,13 +255,13 @@ app.post('/updatemybike', (req, res) => {
           else {
             bikeArray.push(item);
           }
-
-          console.log(bikeArray);
         }
+
         writeUpdateBike(filePath,bikeArray);
+        res.json(bikeArray);
 
       } catch (error) {
-          console.log('an error occurred \n',error);
+          console.log('an error occurre whle updating the bike object \n',error);
       }
     });
   } catch (error) {
@@ -319,7 +306,6 @@ app.get('/getBikeDetails', (req, res) => {
     const emailCookie = req.cookies['email'];
     const matchItems = [];
     const imageFilePath = path.join(__dirname, 'motorcycle_images.json');
-console.log('COOKIE   ',emailCookie);
 
     if (emailCookie === ''  || emailCookie === undefined) {
       return res.status(400).json({ error: 'Email cookie not found' });
@@ -435,39 +421,20 @@ app.get('/getBikeImages', (req, res) => {
         return res.status(500).send('Server error');
       }
 
-      // if (err) {
-      //   console.error('Error reading motorcycle images file:', err);
-      //   return res.status(500).send('Server error');
-      // }
-
-      // let imageArray;
-      // try {
-      //   imageArray = JSON.parse(imageData);
-      // } catch (parseError) {
-      //   console.error('Error parsing images JSON:', parseError);
-      //   return res.status(500).send('Server error');
-      // }
-
-      // console.log('BIKE BEFORE COMBNE  \n',bikeArray)
       // Combine the image data with the bike data
       const combinedBikeData = bikeArray.map(bike => {
         // Find matching image data for the bike
         const imagesForBike = imageArray.filter(image => image.userEmail === bike.userEmail); // Assuming 'bikeId' in image data matches 'Id' in bike data
-        // console.log('IMAGE FOR BIKE  \n',imagesForBike);
 
         let imageList = [];
 
         if (imagesForBike.length > 0) {
-          console.log('Motorcycles array found:', imagesForBike[0].motorcycles);
-      
           if (imagesForBike[0].motorcycles && imagesForBike[0].motorcycles.length > 0) {
             // Map over the motorcycles array to get all image URLs
             imageList = imagesForBike[0].motorcycles.map(motorcycle => {
-              console.log('Processing motorcycle:', motorcycle);
               return motorcycle.imageUrl || null;
             });
       
-            console.log('Populated imageList:', imageList);
           } else {
             console.log('No valid motorcycles array found for the bike.');
           }
@@ -479,41 +446,18 @@ app.get('/getBikeImages', (req, res) => {
           ...bike,
           imageList: imageList // Assign the imageList array
         };
-
-        // Check if imagesForBike is not empty and contains valid motorcycles array
-        // if (imagesForBike.length > 0 && imagesForBike[0].motorcycles && imagesForBike[0].motorcycles.length > 0) {
-        //   // Flatten the motorcycles array and map to get all image sources
-        //   imageList = imagesForBike[0].motorcycles.map(motorcycle => motorcycle.imageUrl);
-        // }
-        // console.log('IMAGE LIST \n',imageList);
-
-        
-        // return {
-        //   ...bike,
-        //   imageList: imagesForBike.map(image => image.src) // Assuming 'src' is the property containing the image URL
-        // };
       });
       console.log('combined array  \n',combinedBikeData);
 
       // Send the parsed bike data as JSON response
-      // res.json(bikeArray);
-  
       res.json(combinedBikeData);
-  
-
     });
-    // console.log('combined array  \n',combinedBikeData);
-
-    // Send the parsed bike data as JSON response
-    // res.json(bikeArray);
-
-    // res.json(combinedBikeData);
-
   });
 });
 
 function writeUpdateBike(filePath,item,bikeFound){
   try {
+    console.log('WRITING NEW BIKE TO FILE...............   \n');
     fs.writeFile(filePath, JSON.stringify(item, null, 2), (writeErr) => {
       if (writeErr) {
         console.error('Error writing file:', writeErr);
@@ -529,15 +473,14 @@ function writeUpdateBike(filePath,item,bikeFound){
 function updateBikeDetails(reqBody, bikeObject) {
   const keys = [
     "userEmail",
-    "ImageID",
-    "Year",
-    "Make",
-    "Model",
-    "Description",
-    "Price",
+    "year",
+    "make",
+    "model",
+    "description",
+    "price",
     "isForSale",
-    "IsSold",
-    "Source",
+    "isSold",
+    "src",
   ];
 
   keys.forEach((key) => {

@@ -5,42 +5,136 @@
     </div>
 </div>
 
-<!-- <h2>Payment Information</h2> -->
-<div class="container-fluid">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
-        <h4>Payment Information</h4>
-        <form (ngSubmit)="onSubmitPayment()" #paymentForm="ngForm" class="p-4">
-        <div class="form-group row">
-            <label for="cardNumber">Card Number</label>
-            <div class="col-sm-7">
-                <input type="text" id="cardNumber" name="cardNumber" required [(ngModel)]="paymentinfo.cardNumber" />
+<div class="container=fluid">
+    <div class="row p-4">
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="background-color: lightblue;color: #000;padding-top: 10px;">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+                <h6>Bike Detail</h6>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="row p-4">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <p>Make:</p>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <p>{{ make }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <p>Model:</p>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <p>{{ model }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <p>Price:</p>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <p>{{ price | currency:'USD':'symbol':'1.2-2' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-12 col-md-12 col-lg-4">
+                                <p>Sales Tax %:</p>
+                            </div>
+                            <div class="col-xs-4 col-sm-2 col-md-2 col-lg-1">
+                                <p>{{ salestax  }}</p>
+                            </div>
+                            <!-- <div class="col-xs-4 col-sm-6 col-md-6 col-lg-5">
+                                <input type="text" placeholder="Zip Code" class="form-control" />
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <p>Sales Tax $:</p>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <p>{{ taxtotal | currency:'USD':'symbol':'1.2-2' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <p>Total:</p>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                <p>{{ purtotal | currency:'USD':'symbol':'1.2-2' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="background-color: lightblue;color: #000;padding-top: 10px;">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7" style="border-bottom: 1px solid #fff;">
+                <h6>Payment Detail</h6>
+            </div>            
+            
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <form (ngSubmit)="onSubmitPayment()" #paymentForm="ngForm" class="p-4">
+                    <div class="form-group row">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <label for="cardNumber">Card Number</label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="cardNumber" name="cardNumber" [(ngModel)]="paymentinfo.cardNumber" />
+                        </div>
+                    </div>
+            
+                    <div class="form-group row">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <label for="cardHolderName">Card Holder Name</label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="cardHolderName" name="cardHolderName" [(ngModel)]="paymentinfo.cardHolderName" />
+                        </div>
+                    </div>
+            
+                    <div class="form-group row">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <label for="expiryDate">Expiry Date</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="expiryDate" name="expiryDate" [(ngModel)]="paymentinfo.expiryDate" placeholder="MM/YY" />
+                        </div>
+                    </div>
+            
+                    <div class="form-group row">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <label for="cvv">CVV</label>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="cvv" name="cvv" [(ngModel)]="paymentinfo.cvv" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 offset-sm-4">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                <button class="btn-primary" type="submit">Cancel</button>
+                            </div>
+                            <div class="xol-xs-12 col-sm-12 col-md-5 col-lg-5">
+                                <button class="btn-primary" type="submit">Submit Payment</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-        <div class="form-group row">
-            <label for="cardHolderName">Card Holder Name</label>
-            <div class="col-sm-7">
-                <input type="text" id="cardHolderName" name="cardHolderName" required [(ngModel)]="paymentinfo.cardHolderName" />
-            </div>
         </div>
-
-        <div class="form-group row">
-            <label for="expiryDate">Expiry Date</label>
-            <div class="col-sm-7">
-                <input type="text" id="expiryDate" name="expiryDate" required [(ngModel)]="paymentinfo.expiryDate" placeholder="MM/YY" />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="cvv">CVV</label>
-            <div class="col-sm-7">
-                <input type="text" id="cvv" name="cvv" required[(ngModel)]="paymentinfo.cvv" />
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <button type="submit">Submit Payment</button>
-        </div>
-        </form>
     </div>
 </div>
 

@@ -5,6 +5,10 @@ import { HttpClient,HttpClientModule  } from '@angular/common/http';
 import { Router } from '@angular/router';  // Import Router
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../footer/footer.component';
+import { CurrencyPipe } from '@angular/common';
+
+import { switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-user-bikes',
@@ -16,8 +20,9 @@ import { FooterComponent } from '../footer/footer.component';
 
 export class UserBikesComponent {
   bikes: any[] = [];
-  constructor(private http: HttpClient,private router: Router) {}
 
+  constructor(private http: HttpClient,private router: Router) {}
+  
   ngOnInit(): void {
     this.loadBikes();
   }
@@ -48,27 +53,7 @@ export class UserBikesComponent {
       );
   }
 
-  // updateBike(imageID: string) {
-  //   const bike = this.bikes.find(b => b.ImageID === imageID);
-  //   if (bike) {
-  //     this.http.post('http://localhost:3000/updatemybike', bike).subscribe(
-  //       (response) => {
-  //         console.log('Bike updated successfully:', response);
-  //         // Refresh the bikes page
-  //         this.loadBikes();
-  //       },
-  //       (error) => {
-  //         console.error('Error updating bike:', error);
-  //       }
-  //     );
-  //   }
-  // }
-
   saveBike(bike: any) {
-    console.log('EMAIKL.............  ',bike.userEmail,'\n');
-    console.log(bike.ImageID,'\n');
-
-
     this.http.post('http://localhost:3000/updatemybike', bike).subscribe(
       (response) => {
         console.log('Bike updated successfully:', response);
@@ -88,26 +73,4 @@ export class UserBikesComponent {
   cancelEdit(bike: any) {
     bike.isEditing = false;
   }
-
-  // addBike(bike: any): void {
-  //   this.router.navigate(['/add-bike']);
-
-
-  //   // this.http.post('http://localhost:3000/addBike', bike, { withCredentials: true })
-  //   //   .subscribe(
-  //   //     (response) => {
-  //   //       console.log('Bike added:', response);
-  //   //       this.loadBikes(); // Reload bikes after adding
-  //   //     },
-  //   //     (error) => {
-  //   //       console.error('Error adding bike:', error);
-  //   //     }
-  //   //   );
-  // }
-
-
-  // onBuyBike(bike: any): void {
-  //   // Implement your purchase logic here
-  //   console.log(`Buying bike: ${bike.make} ${bike.model}`);
-  // }
 }
