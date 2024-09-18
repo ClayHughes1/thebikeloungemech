@@ -3,13 +3,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment'; // Import environment file
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class GeolocationService {
   private geocodingApiUrl: string = 'https://maps.googleapis.com/maps/api/geocode/json';
-  private apiKey: string = 'AIzaSyBJFdf7VAOAzP_x_JRQdLjxC86MGAbyUqU'; // Replace with your Google API key
+  private apiKey: string = environment.googleApiKey; // Replace with your Google API key
 
   constructor(private http: HttpClient) {}
 

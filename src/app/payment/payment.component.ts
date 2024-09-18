@@ -63,24 +63,6 @@ export class PaymentComponent {
     this.getLocationAndZipCode();
   }
 
- // Function to get the local sales tax (replace with your API or calculation logic)
-  getSalesTax(): void {
-    // Example: Replace with a real API endpoint for local sales tax data
-    const apiUrl = 'https://api.example.com/salestax'; 
-
-    this.http.get<{ tax: number }>(apiUrl).subscribe(
-      (response) => {
-        // Assuming the response contains a tax field, update the salestax property
-        this.salestax = response.tax;
-      },
-      (error) => {
-        console.error('Error fetching sales tax:', error);
-        // Set a default sales tax in case of an error
-        this.salestax = 0;
-      }
-    );
-  }
-
   getLocationAndZipCode(): void {
     // Check if we are in the browser
     if (typeof window !== 'undefined' && 'navigator' in window) {
